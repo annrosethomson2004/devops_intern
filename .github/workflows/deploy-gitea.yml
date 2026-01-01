@@ -1,0 +1,21 @@
+name: gitea
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy_gitea:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy Gitea using Docker Swarm
+        run: |
+          docker stack deploy -c gitea-compose.yml gitea
+
+      - name: Verify services
+        run: docker service ls
